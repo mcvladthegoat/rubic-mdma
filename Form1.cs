@@ -101,12 +101,7 @@ namespace mdma
 
                 for (int j = 1; j < dataGridView1.ColumnCount; j++)
                 {
-<<<<<<< HEAD
                     cndList[j - 1] += Convert.ToInt32(dataGridView1.Rows[i].Cells[j].Value);
-=======
-                    dataGridView1.Rows[i-1].Cells[0] = new DataGridViewTextBoxCell() {Value = "Position " + i};
-                    dataGridView1.Rows[i - 1].Cells[0] = new DataGridViewTextBoxCell() { Value = row.Cells[i]};
->>>>>>> 602a6d5d1b47917a9d340982fb0c36a68c3fc0cc
                 }
             }
 
