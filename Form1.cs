@@ -54,10 +54,17 @@ namespace mdma
 
         }
 
+        private void clearResults()
+        {
+            dataGridView2.Rows.Clear();
+            dataGridView2.Refresh();
+        }
+
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
+            this.clearResults();
         }
 
         private void MDMa_Load(object sender, EventArgs e)
@@ -113,8 +120,46 @@ namespace mdma
 
         }
 
+        private int FindKey(List<int> a, int val)
+        {
+            int res=-1;
+            for (int i = 0; i < a.Count; i++)
+            {
+                if (a[i] == val)
+                {
+                    res = i;
+                    break;
+                }
+            }
+            return res;
+        }
+
+        private void TraceMatrix(int[,] a)
+        {
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                StringBuilder s = new StringBuilder();
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    s.Append(a[i, j].ToString() + " ");
+                }
+                Debug.WriteLine(s);
+            }
+        }
+
+        private int FindMinInMatrix(int[,] a, int row)
+        {
+            int min = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                min = ((a[row,i] > 0 && min > a[row, i]) || min ==0) ? a[row, i] : min;
+            }
+            return min;
+        }
+
         private void compRulesMethod_Click(object sender, EventArgs e)
         {
+            this.clearResults();
             //maximin implementation
             var data = this.proceedInputData();
             int [,] res = new int[candCount,candCount] ;
@@ -126,13 +171,36 @@ namespace mdma
             {
                 for (int j = 0; j < candCount; j++)
                 {
-                    if (i > j) continue;
+                    if (i >= j) continue; //Avoiding repeats and diagonal
                     foreach (KeyValuePair<string, List<int>> k in data)
                     {
-                        Debug.WriteLine(k.Value.Find(x => x == i+1));
+                        var a = FindKey(k.Value, i + 1);
+                        var b = FindKey(k.Value, j + 1);
+                        
+                        res[i, j] += (a > b) ? 0 : 1;
+                        res[j, i] += (a > b) ? 1 : 0;
+
+                        Debug.WriteLine("FOUND {0} {1} - {2}", i, j, FindKey(k.Value, i+1));
+                        Debug.WriteLine("FOUND {0} {1} - {2}", i, j, FindKey(k.Value, j+1));
                     }
                 }
             }
+
+            TraceMatrix(res);
+            Dictionary<string, int> r = new Dictionary<string, int>();
+            for (int i = 0; i < candCount; i++)
+            {
+                r.Add(Convert.ToString(i + 1), FindMinInMatrix(res, i));
+            }
+            r = r.OrderByDescending(p => p.Value).ToDictionary(p => p.Key, p => p.Value);
+
+            for (int i = 0; i < candCount;i++ )
+            {
+                dataGridView2.Rows.Add(1);
+                dataGridView2.Rows[i].Cells[0] = new DataGridViewTextBoxCell() { Value = (i + 1) };
+                dataGridView2.Rows[i].Cells[1] = new DataGridViewTextBoxCell() { Value = "Candidate " + r.ElementAt(i).Key };
+            }
+            Debug.WriteLine("FINAL");
         }
     }
 }
