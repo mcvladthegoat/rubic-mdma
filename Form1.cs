@@ -77,21 +77,34 @@ namespace mdma
             newCol.Name = "Candidate " + candCount;
             newCol.Visible = true;
             newCol.Width = 100;
+            newCol.ValueType = typeof(int);
             dataGridView1.Columns.Add(newCol);
         }
 
         private void bordaMethod_Click(object sender, EventArgs e)
         {
             dataGridView2.Rows.Clear();
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            var cndList = new List<int>();
+            for (int i = 0; i < dataGridView1.Columns.Count - 1; i++)
             {
-                dataGridView2.Rows.Add(dataGridView2.Rows.Add(new DataGridViewRow()));
-                for (int i = 1; i < dataGridView1.ColumnCount; i++)
+                cndList.Add(0);
+            }
+            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            {
+
+                for (int j = 1; j < dataGridView1.ColumnCount; j++)
                 {
-                    dataGridView1.Rows[i-1].Cells[0] = new DataGridViewTextBoxCell() {Value = "Candidate " + i};
-                    dataGridView1.Rows[i - 1].Cells[0] = new DataGridViewTextBoxCell() { Value = row.Cells[i]};
+                    cndList[j - 1] += Convert.ToInt32(dataGridView1.Rows[i].Cells[j].Value);
                 }
             }
+
+            for (int i = 0; i < cndList.Count; i++)
+            {
+                dataGridView2.Rows.Add(1);
+                dataGridView2.Rows[i].Cells[0] = new DataGridViewTextBoxCell() { Value = "Candidate " + (i + 1) };
+                dataGridView2.Rows[i].Cells[1] = new DataGridViewTextBoxCell() { Value = cndList[i] };
+            }
+
         }
     }
 }
