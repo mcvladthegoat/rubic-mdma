@@ -24,8 +24,15 @@ namespace mdma
                 //Debug.WriteLine(row.Cells);
                 if (row.Cells[0].EditedFormattedValue.ToString() != "")
                 {
-                    data.Add(row.Cells[0].EditedFormattedValue.ToString(),
-                        new List<int>(Array.ConvertAll<string, int>(row.Cells[1].EditedFormattedValue.ToString().Split(','), int.Parse)));
+                    List<int> votes = new List<int>();
+                    for (int i = 1; i< row.Cells.Count; i++)
+                    {
+                        votes.Add(Convert.ToInt32(row.Cells[i].EditedFormattedValue.ToString()));
+                        Debug.WriteLine(row.Cells[i].EditedFormattedValue);
+                    }
+                    data.Add(row.Cells[0].EditedFormattedValue.ToString(), votes);
+                    //data.Add(row.Cells[0].EditedFormattedValue.ToString(),
+                        //new List<int>(Array.ConvertAll<string, int>(row.Cells[1].EditedFormattedValue.ToString().Split(','), int.Parse)));
                 }
             }
             return data;
@@ -92,6 +99,12 @@ namespace mdma
                     dataGridView1.Rows[i - 1].Cells[0] = new DataGridViewTextBoxCell() { Value = row.Cells[i]};
                 }
             }
+        }
+
+        private void compRulesMethod_Click(object sender, EventArgs e)
+        {
+            //maximin implementation
+            var data = this.proceedInputData();
         }
     }
 }
