@@ -100,7 +100,7 @@ namespace mdma
 
                 for (int j = 1; j < dataGridView1.ColumnCount; j++)
                 {
-                    cndList[j - 1] += Convert.ToInt32(dataGridView1.Rows[i].Cells[j].Value);
+                    cndList[Convert.ToInt32(dataGridView1.Rows[i].Cells[j].Value) - 1] += (dataGridView1.ColumnCount) - j;
                 }
             }
 
