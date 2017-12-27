@@ -90,26 +90,48 @@ namespace mdma
         private void bordaMethod_Click(object sender, EventArgs e)
         {
             dataGridView2.Rows.Clear();
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            var cndList = new List<int>();
+            for (int i = 0; i < dataGridView1.Columns.Count - 1; i++)
             {
-                dataGridView2.Rows.Add(dataGridView2.Rows.Add(new DataGridViewRow()));
-                for (int i = 1; i < dataGridView1.ColumnCount; i++)
+                cndList.Add(0);
+            }
+            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            {
+
+                for (int j = 1; j < dataGridView1.ColumnCount; j++)
                 {
-                    dataGridView1.Rows[i-1].Cells[0] = new DataGridViewTextBoxCell() {Value = "Position " + i};
-                    dataGridView1.Rows[i - 1].Cells[0] = new DataGridViewTextBoxCell() { Value = row.Cells[i]};
+                    cndList[j - 1] += Convert.ToInt32(dataGridView1.Rows[i].Cells[j].Value);
                 }
             }
+
+            for (int i = 0; i < cndList.Count; i++)
+            {
+                dataGridView2.Rows.Add(1);
+                dataGridView2.Rows[i].Cells[0] = new DataGridViewTextBoxCell() { Value = "Candidate " + (i + 1) };
+                dataGridView2.Rows[i].Cells[1] = new DataGridViewTextBoxCell() { Value = cndList[i] };
+            }
+
         }
 
         private void compRulesMethod_Click(object sender, EventArgs e)
         {
             //maximin implementation
             var data = this.proceedInputData();
-            List<List<int>> res = new List<List<int>>();
+            int [,] res = new int[candCount,candCount] ;
             for (int i = 0; i < candCount; i++)
             {
-                res[i] = new List<int>();
-                res[i][i] = 0;
+                res[i,i] = 0;
+            }
+            for (int i = 0; i < candCount; i++)
+            {
+                for (int j = 0; j < candCount; j++)
+                {
+                    if (i > j) continue;
+                    foreach (KeyValuePair<string, List<int>> k in data)
+                    {
+                        Debug.WriteLine(k.Value.Find(x => x == i+1));
+                    }
+                }
             }
         }
     }
