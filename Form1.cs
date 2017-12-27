@@ -14,6 +14,7 @@ namespace mdma
 {
     public partial class MDMa : Form
     {
+        private static int candCount;
         public Dictionary<string, List<int>> proceedInputData()
         {
             Dictionary<string, List<int>> data = new Dictionary<string, List<int>>();
@@ -33,6 +34,7 @@ namespace mdma
         public MDMa()
         {
             InitializeComponent();
+            candCount = 0;
         }
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -61,6 +63,34 @@ namespace mdma
             if (this.proceedInputData().Count > 0)
             {
                 MessageBox.Show("Data is OK");
+            }
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            candCount++;
+            DataGridViewColumn newCol = new DataGridViewColumn();
+            DataGridViewCell cell = new DataGridViewTextBoxCell();
+            newCol.CellTemplate = cell;
+
+            newCol.HeaderText = "Candidate " + candCount;
+            newCol.Name = "Candidate " + candCount;
+            newCol.Visible = true;
+            newCol.Width = 100;
+            dataGridView1.Columns.Add(newCol);
+        }
+
+        private void bordaMethod_Click(object sender, EventArgs e)
+        {
+            dataGridView2.Rows.Clear();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                dataGridView2.Rows.Add(dataGridView2.Rows.Add(new DataGridViewRow()));
+                for (int i = 1; i < dataGridView1.ColumnCount; i++)
+                {
+                    dataGridView1.Rows[i-1].Cells[0] = new DataGridViewTextBoxCell() {Value = "Candidate " + i};
+                    dataGridView1.Rows[i - 1].Cells[0] = new DataGridViewTextBoxCell() { Value = row.Cells[i]};
+                }
             }
         }
     }
