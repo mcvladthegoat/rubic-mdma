@@ -80,8 +80,8 @@ namespace mdma
             DataGridViewCell cell = new DataGridViewTextBoxCell();
             newCol.CellTemplate = cell;
 
-            newCol.HeaderText = "Candidate " + candCount;
-            newCol.Name = "Candidate " + candCount;
+            newCol.HeaderText = "Position " + candCount;
+            newCol.Name = "Position " + candCount;
             newCol.Visible = true;
             newCol.Width = 100;
             dataGridView1.Columns.Add(newCol);
@@ -95,7 +95,7 @@ namespace mdma
                 dataGridView2.Rows.Add(dataGridView2.Rows.Add(new DataGridViewRow()));
                 for (int i = 1; i < dataGridView1.ColumnCount; i++)
                 {
-                    dataGridView1.Rows[i-1].Cells[0] = new DataGridViewTextBoxCell() {Value = "Candidate " + i};
+                    dataGridView1.Rows[i-1].Cells[0] = new DataGridViewTextBoxCell() {Value = "Position " + i};
                     dataGridView1.Rows[i - 1].Cells[0] = new DataGridViewTextBoxCell() { Value = row.Cells[i]};
                 }
             }
@@ -105,6 +105,12 @@ namespace mdma
         {
             //maximin implementation
             var data = this.proceedInputData();
+            List<List<int>> res = new List<List<int>>();
+            for (int i = 0; i < candCount; i++)
+            {
+                res[i] = new List<int>();
+                res[i][i] = 0;
+            }
         }
     }
 }
